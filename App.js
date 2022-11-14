@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Text, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {getFirestore, collection, getDocs, doc} from 'firebase/firestore';
 
-export default function App() {
+import cadastroAluno from './components/cadastroAluno';
+import cadastroDisciplina from './components/cadastroDisciplina';
+import cadastroProfessor from './components/cadastroProfessor';
+import cadastroTurma from './components/cadastroTurma';
+import historico from './components/historico';
+import db from './src/config.js';
+
+
+
+
+
+
+const collecRef = collection(db, 'Aluno');
+const Pilha = createNativeStackNavigator();
+
+
+function telaCadastro(props) {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+      <Button title='Cadastro Aluno' onPress={()=>props.navigation.navigate('cadastroAluno')}/>
+      <Button title='Cadastro Disciplina' onPress={()=>props.navigation.navigate('cadastroDisciplina')}/>
+      <Button title='Cadastro Professor' onPress={()=>props.navigation.navigate('cadastroProfessor')}/>
+      <Button title='Cadastro Turma' onPress={()=>props.navigation.navigate('cadastroTurma')}/>
+      <Button title='Histórico' onPress={()=>props.navigation.navigate('historico')}/>
+      <Text></Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App(){
+  return(
+    <NavigationContainer independent={true}>
+      <Pilha.Navigator>
+        <Pilha.Screen name='telaCadastro' component={telaCadastro}/>
+        <Pilha.Screen name='cadastroAluno' component={cadastroAluno}/>
+        <Pilha.Screen name='cadastroDisciplina' component={cadastroDisciplina}/>
+        <Pilha.Screen name='cadastroProfessor' component={cadastroProfessor}/>
+        <Pilha.Screen name='cadastroTurma' component={cadastroTurma}/>
+        <Pilha.Screen name='historico' component={historico}/>
+      </Pilha.Navigator>
+    </NavigationContainer>
+  );
+}
+
